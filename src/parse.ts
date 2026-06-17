@@ -1,7 +1,7 @@
 import {
-	ForeignKeyConstraintError,
-	RepositoryError,
-	UniqueConstraintError,
+  ForeignKeyConstraintError,
+  RepositoryError,
+  UniqueConstraintError,
 } from "./errors.js";
 
 /**
@@ -14,16 +14,16 @@ import {
  * Returns `null` when the value is not a recognisable D1 error.
  */
 function extractD1Message(error: unknown): string | null {
-	if (!(error instanceof Error)) return null;
+  if (!(error instanceof Error)) return null;
 
-	// DrizzleQueryError wraps the original D1 error in cause
-	const cause = (error as Error & { cause?: unknown }).cause;
-	const raw = cause instanceof Error ? cause.message : error.message;
+  // DrizzleQueryError wraps the original D1 error in cause
+  const cause = (error as Error & { cause?: unknown }).cause;
+  const raw = cause instanceof Error ? cause.message : error.message;
 
-	if (raw.startsWith("D1_ERROR:") || raw.startsWith("D1_EXEC_ERROR:")) {
-		return raw;
-	}
-	return null;
+  if (raw.startsWith("D1_ERROR:") || raw.startsWith("D1_EXEC_ERROR:")) {
+    return raw;
+  }
+  return null;
 }
 
 /**
@@ -65,30 +65,30 @@ function extractD1Message(error: unknown): string | null {
  * ```
  */
 export function parseD1Error(
-	error: unknown,
+  error: unknown,
 ): UniqueConstraintError | ForeignKeyConstraintError | RepositoryError {
-	const message = extractD1Message(error);
-	const cause = error instanceof Error ? error : undefined;
+  const message = extractD1Message(error);
+  const cause = error instanceof Error ? error : undefined;
 
-	if (message === null) {
-		return new RepositoryError(
-			error instanceof Error ? error.message : "Unknown database error",
-			{ cause },
-		);
-	}
+  if (message === null) {
+    return new RepositoryError(
+      error instanceof Error ? error.message : "Unknown database error",
+      { cause },
+    );
+  }
 
-	// UNIQUE constraint failed: <table>.<col>: SQLITE_CONSTRAINT
-	const uniqueMatch = message.match(
-		/UNIQUE constraint failed: ([^:]+): SQLITE_CONSTRAINT/,
-	);
-	if (uniqueMatch) {
-		return new UniqueConstraintError(uniqueMatch[1].trim(), { cause });
-	}
+  // UNIQUE constraint failed: <table>.<col>: SQLITE_CONSTRAINT
+  const uniqueMatch = message.match(
+    /UNIQUE constraint failed: ([^:]+): SQLITE_CONSTRAINT/,
+  );
+  if (uniqueMatch) {
+    return new UniqueConstraintError(uniqueMatch[1].trim(), { cause });
+  }
 
-	// FOREIGN KEY constraint failed: SQLITE_CONSTRAINT
-	if (message.includes("FOREIGN KEY constraint failed")) {
-		return new ForeignKeyConstraintError({ cause });
-	}
+  // FOREIGN KEY constraint failed: SQLITE_CONSTRAINT
+  if (message.includes("FOREIGN KEY constraint failed")) {
+    return new ForeignKeyConstraintError({ cause });
+  }
 
-	return new RepositoryError(message, { cause });
+  return new RepositoryError(message, { cause });
 }
