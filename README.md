@@ -1,6 +1,8 @@
 # drizzle-d1-errors
 
-Parse raw Cloudflare D1 errors into typed error classes for `instanceof` checking.
+Parse Cloudflare D1 errors thrown by [drizzle-orm](https://orm.drizzle.team/) into typed error classes for `instanceof` checking.
+
+> Raw D1 errors (without Drizzle) are also supported — `DrizzleQueryError` unwrapping is applied automatically when present.
 
 ```ts
 import { parseD1Error, UniqueConstraintError, ForeignKeyConstraintError } from "drizzle-d1-errors";
