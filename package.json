@@ -1,6 +1,17 @@
 {
   "name": "drizzle-d1-errors",
   "version": "0.1.0",
+  "description": "Parse Cloudflare D1 errors thrown by drizzle-orm into typed error classes",
+  "keywords": ["cloudflare", "d1", "drizzle", "drizzle-orm", "error", "workers"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/func09/drizzle-d1-errors.git"
+  },
+  "homepage": "https://github.com/func09/drizzle-d1-errors#readme",
+  "bugs": {
+    "url": "https://github.com/func09/drizzle-d1-errors/issues"
+  },
   "type": "module",
   "exports": {
     ".": {
