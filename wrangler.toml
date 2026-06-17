@@ -1,0 +1,7 @@
+name = "drizzle-d1-errors-test"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "drizzle-d1-errors-test"
+database_id = "local"
