@@ -13,6 +13,9 @@
   ],
   "scripts": {
     "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check src",
+    "format": "biome format --write src",
     "test": "vitest run",
     "test:d1": "vitest run --config vitest.config.d1.ts"
   },
@@ -29,6 +32,7 @@
     }
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.0",
     "@cloudflare/vitest-pool-workers": "^0.5.0",
     "@cloudflare/workers-types": "^4.0.0",
     "drizzle-orm": "^0.44.0",
