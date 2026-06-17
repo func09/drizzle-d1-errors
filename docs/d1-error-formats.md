@@ -60,6 +60,18 @@ D1_ERROR: no such table: <name>: SQLITE_ERROR
 D1_ERROR: no such column: <name> at offset <N>: SQLITE_ERROR
 ```
 
+### via `batch()`
+
+`batch()` uses the same `D1_ERROR` prefix — **not** `D1_EXEC_ERROR` as early documentation suggested.  
+The error message format is identical to single-statement errors.
+
+Example (UNIQUE violation inside a batch):
+```
+D1_ERROR: UNIQUE constraint failed: users.id: SQLITE_CONSTRAINT
+```
+
+When a statement in a batch fails, `db.batch()` rejects with the error from the first failing statement. Statements that ran before the failure are **not** rolled back (D1 batch is not transactional by default).
+
 ## Drizzle ORM
 
 When using `drizzle-orm` with D1, errors are wrapped as `DrizzleQueryError`.  
