@@ -1,4 +1,5 @@
 export {
+	ForeignKeyConstraintError,
 	RecordNotFoundError,
 	RepositoryError,
 	UniqueConstraintError,

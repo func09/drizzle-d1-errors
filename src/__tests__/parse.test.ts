@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 import {
+	ForeignKeyConstraintError,
 	RecordNotFoundError,
 	RepositoryError,
 	UniqueConstraintError,
@@ -35,17 +36,27 @@ describe("parseD1Error", () => {
 		});
 	});
 
+	describe("FOREIGN KEY constraint", () => {
+		test("returns ForeignKeyConstraintError", () => {
+			const err = new Error(
+				"D1_ERROR: FOREIGN KEY constraint failed: SQLITE_CONSTRAINT",
+			);
+			expect(parseD1Error(err)).toBeInstanceOf(ForeignKeyConstraintError);
+		});
+
+		test("preserves original error as cause", () => {
+			const err = new Error(
+				"D1_ERROR: FOREIGN KEY constraint failed: SQLITE_CONSTRAINT",
+			);
+			const result = parseD1Error(err);
+			expect((result as Error & { cause?: unknown }).cause).toBe(err);
+		});
+	});
+
 	describe("other constraint violations → RepositoryError", () => {
 		test("NOT NULL constraint", () => {
 			const err = new Error(
 				"D1_ERROR: NOT NULL constraint failed: users.email: SQLITE_CONSTRAINT",
-			);
-			expect(parseD1Error(err)).toBeInstanceOf(RepositoryError);
-		});
-
-		test("FOREIGN KEY constraint", () => {
-			const err = new Error(
-				"D1_ERROR: FOREIGN KEY constraint failed: SQLITE_CONSTRAINT",
 			);
 			expect(parseD1Error(err)).toBeInstanceOf(RepositoryError);
 		});

@@ -18,6 +18,13 @@ export class UniqueConstraintError extends Error {
 	}
 }
 
+export class ForeignKeyConstraintError extends Error {
+	constructor(options?: ErrorOptions) {
+		super("Foreign key constraint failed", options);
+		this.name = "ForeignKeyConstraintError";
+	}
+}
+
 export class RecordNotFoundError extends Error {
 	readonly entity?: string;
 

@@ -1,4 +1,8 @@
-import { RepositoryError, UniqueConstraintError } from "./errors.js";
+import {
+	ForeignKeyConstraintError,
+	RepositoryError,
+	UniqueConstraintError,
+} from "./errors.js";
 
 function extractD1Message(error: unknown): string | null {
 	if (!(error instanceof Error)) return null;
@@ -15,7 +19,7 @@ function extractD1Message(error: unknown): string | null {
 
 export function parseD1Error(
 	error: unknown,
-): UniqueConstraintError | RepositoryError {
+): UniqueConstraintError | ForeignKeyConstraintError | RepositoryError {
 	const message = extractD1Message(error);
 	const cause = error instanceof Error ? error : undefined;
 
@@ -32,6 +36,11 @@ export function parseD1Error(
 	);
 	if (uniqueMatch) {
 		return new UniqueConstraintError(uniqueMatch[1].trim(), { cause });
+	}
+
+	// FOREIGN KEY constraint failed: SQLITE_CONSTRAINT
+	if (message.includes("FOREIGN KEY constraint failed")) {
+		return new ForeignKeyConstraintError({ cause });
 	}
 
 	return new RepositoryError(message, { cause });
