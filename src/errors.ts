@@ -18,10 +18,10 @@
  * ```
  */
 export class RepositoryError extends Error {
-	constructor(message: string, options?: ErrorOptions) {
-		super(message, options);
-		this.name = "RepositoryError";
-	}
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+    this.name = "RepositoryError";
+  }
 }
 
 /**
@@ -47,17 +47,17 @@ export class RepositoryError extends Error {
  * ```
  */
 export class UniqueConstraintError extends Error {
-	/** `<table>.<column>` that caused the violation, e.g. `"users.email"`. */
-	readonly field?: string;
+  /** `<table>.<column>` that caused the violation, e.g. `"users.email"`. */
+  readonly field?: string;
 
-	constructor(field?: string, options?: ErrorOptions) {
-		super(
-			field ? `Unique constraint failed: ${field}` : "Unique constraint failed",
-			options,
-		);
-		this.name = "UniqueConstraintError";
-		this.field = field;
-	}
+  constructor(field?: string, options?: ErrorOptions) {
+    super(
+      field ? `Unique constraint failed: ${field}` : "Unique constraint failed",
+      options,
+    );
+    this.name = "UniqueConstraintError";
+    this.field = field;
+  }
 }
 
 /**
@@ -77,10 +77,10 @@ export class UniqueConstraintError extends Error {
  * ```
  */
 export class ForeignKeyConstraintError extends Error {
-	constructor(options?: ErrorOptions) {
-		super("Foreign key constraint failed", options);
-		this.name = "ForeignKeyConstraintError";
-	}
+  constructor(options?: ErrorOptions) {
+    super("Foreign key constraint failed", options);
+    this.name = "ForeignKeyConstraintError";
+  }
 }
 
 /**
@@ -100,12 +100,12 @@ export class ForeignKeyConstraintError extends Error {
  * ```
  */
 export class RecordNotFoundError extends Error {
-	/** Human-readable name of the entity that was not found, e.g. `"User"`. */
-	readonly entity?: string;
+  /** Human-readable name of the entity that was not found, e.g. `"User"`. */
+  readonly entity?: string;
 
-	constructor(entity?: string, options?: ErrorOptions) {
-		super(entity ? `Record not found: ${entity}` : "Record not found", options);
-		this.name = "RecordNotFoundError";
-		this.entity = entity;
-	}
+  constructor(entity?: string, options?: ErrorOptions) {
+    super(entity ? `Record not found: ${entity}` : "Record not found", options);
+    this.name = "RecordNotFoundError";
+    this.entity = entity;
+  }
 }
